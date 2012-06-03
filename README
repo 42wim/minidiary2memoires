@@ -1,0 +1,58 @@
+Background
+==========
+Samsungs Galaxy S series comes preinstalled with 'minidiary' a simple diary
+(which I used to make simple diary entries).
+
+When I flashed my Galaxy S to a recent ICS update, this app stopped working
+mainly because it was depending on the Samsungs Touchwiz libraries. This really
+sucked. At the android market I found another great diary 'memoires', it seemed
+to use sqlite as it storage and supported backup/restore as zipfiles containing
+the sqlite database and images.
+
+So I started making an import/convertor of the minidiary entries to the new
+memories diary entries.
+
+Script is tested on my personal diary containing about 500 entries and about 
+400 pictures.
+
+Prerequisites
+=============
+perl
+perl-dbi
+perl-dbd-sqlite
+imagemagick
+zip
+
+How to use it
+=============
+WARNING: this will create an empty Memoires database! (so if you used Memoires
+before that data will be removed)
+
+1) Backup your minidiary database
+
+You can find it on your galaxy S in 
+/dbdata/databases/com.sec.android.app.minidiary/mini_diary.db
+
+It can be quite big, because apparently it stores pictures 4 times (although as
+different sizes) in this database.
+(You can use something like Titanium Backup or just cp or tar to make the
+backup) 
+
+2) Put the mini_diary.db in the 'input' directory
+
+3) Run minidiary2memoires.sh this will give output like below
+
+./minidiary2memoires.sh
+creating basic memoires database
+reading minidiary database, extracting images and creating sqlimport script
+creating thumb images
+importing minidiary data into memoires database
+creating zipfile
+-rw-r--r-- 1 wim users 50269752 Jun  3 14:50 tmp/memoires_backup.1.zip
+copy tmp/memoires_backup.1.zip to your sdcard (/sdcard/backups/memoires/)
+
+
+4) copy the memoires_backup.1.zip to your android device (to /sdcard/backups/memoires)
+
+5) Start Memories - import/export - restore from backup - select
+memoires_backup.1.zip
